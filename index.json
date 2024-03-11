@@ -1,0 +1,120 @@
+[
+{
+	"uri": "//localhost:1313/1-introduce/",
+	"title": "Giới thiệu",
+	"tags": [],
+	"description": "",
+	"content": "Trong môi trường phát triển phần mềm ngày nay, việc duy trì tính linh hoạt, tốc độ và độ tin cậy trong quy trình phát triển và triển khai ứng dụng là cực kỳ quan trọng. Continuous Integration (CI) và Continuous Delivery/Deployment (CD) là những phương pháp tiếp cận tốt nhất giúp đạt được mục tiêu này. CI/CD giúp tự động hóa các bước từ việc tích hợp mã nguồn, xây dựng ứng dụng, thử nghiệm và triển khai ứng dụng lên môi trường sản xuất một cách suôn sẻ và liên tục.\nHoàn cảnh sử dụng CI/CD:\nMột nhóm phát triển phần mềm thường gặp phải thách thức về việc duy trì tính nhất quán và chất lượng của mã nguồn khi làm việc trong một môi trường động với nhiều lập trình viên. Việc triển khai thủ công có thể dẫn đến lỗi, trì hoãn và thậm chí là sự cố hệ thống nghiêm trọng. CI/CD giải quyết vấn đề này bằng cách tự động hóa quy trình xây dựng và triển khai, giúp phát hiện và sửa lỗi sớm, giảm thời gian đưa sản phẩm ra thị trường và tăng cường phản hồi từ người dùng cuối.\nSử dụng CI/CD trên AWS\nAWS cung cấp bộ công cụ hỗ trợ CI/CD bao gồm một loạt các dịch vụ có thể tích hợp sâu cùng nhau, có thể đáp ứng nhu cầu xây dựng luồng CI/CD một cách tối ưu nhất cho quy mô và độ phức tạp dự án. Bộ công cụ bao gồm các dịch vụ chính như AWS CodeCommit, AWS CodeBuild, AWS CodeDeploy, AWS CodePipeline được thiết kế để làm việc một cách mượt mà với các dịch vụ AWS khác như S3, Lambda, EC2, ECS, EKS, \u0026hellip;\n"
+},
+{
+	"uri": "//localhost:1313/",
+	"title": "Hoà&#39;s Workshop 1",
+	"tags": [],
+	"description": "",
+	"content": "CI/CD VỚI AWS Tổng quan Trong bài lab này, chúng ta sẽ cùng nhau đi xây dựng 1 luồng CI/CD bằng các công cụ hỗ trợ CI/CD trên nền tảng AWS\nNội dung Giới thiệu Tổng quan kiến trúc Tạo các Policy và Role cần thiết Tạo repository trên CodeCommit Tạo các Lambda Tạo bảng DynamoDB và S3 Bucket Tạo luồng CodePipeline Kiểm tra kết quả chạy Dọn dẹp tài nguyên "
+},
+{
+	"uri": "//localhost:1313/4-createrepo/4.1-createrepo/",
+	"title": "Tạo Repository CodeCommit",
+	"tags": [],
+	"description": "",
+	"content": "Tạo Repository Truy cập vào giao diện quản trị dịch vụ CodeCommit Click Create repository. Điền Repository name và Description, sau đó click Create. Quay lại giao diện console CodeCommit, click vào mục Repositories, Repository vừa tạo sẽ hiện trên màn hình. Tiếp theo chúng ta sẽ tiến hành các bước setup để có thể remote đến Repository từ Local.\n"
+},
+{
+	"uri": "//localhost:1313/3-policyandrole/3.1-codepipeline/",
+	"title": "Tạo Role cho CodePipeline",
+	"tags": [],
+	"description": "",
+	"content": "\nTruy cập vào giao diện quản trị của dịch vụ IAM. Click chọn Roles. Click Create role. Click Custom trust policy. Sửa \u0026ldquo;Custom trust policy\u0026rdquo; như hình. Click Next Tại trang Add permissions, lần lượt thêm các policy AmazonS3FullAccess, AWSCodeCommitFullAccess, AWSCodeDeployFullAccess, AWSCodePipeline_FullAccess, AWSLambda_FullAccess do pipeline của chúng ta cần tương tác với các service đó. Click Next. Tại trang Name, review, and create, điền Role name và Description, kiểm tra lại Trust policy và Add permissions, sau đó bấm Create role Sau khi Create role, chúng ta sẽ vào lại giao diện Console của IAM, tìm kiếm tên Role và click vào kiểm tra lại các setting, phần này mình hơi lười nên không có ảnh đâu, mọi người tự làm nha (\u0026gt;_\u0026lt;).\n"
+},
+{
+	"uri": "//localhost:1313/4-createrepo/4.2-remote/",
+	"title": "Tạo HTTPS Git credentials for AWS CodeCommit và remote từ Local",
+	"tags": [],
+	"description": "",
+	"content": "Trong bước này, chúng ta sẽ tạo HTTPS Git credentials for AWS CodeCommit và tiến hành remote Repository CodeCommit từ Local\nTạo S3 Bucket Truy cập vào giao diện quản trị của dịch vụ IAM. Click Users và chọn user mình đang sử dụng. Click chuyển sang tab Security credentials. Kéo chuột xuống phía dưới và click Generate credentials. Click Download credentials để tải về file thông tin đăng nhập phục vụ cho bước Remote phía sau Quay lại giao diện console CodeCommit, click vào mục Repositories, Repository vừa tạo ở phần 4.1 sẽ hiện trên màn hình, click copy link HTTPS của Repository. Chạy câu lệnh git clone với link HTTPS vừa copy, cửa sổ popup đăng nhập hiện lên, chúng ta sẽ điền thông tin đăng nhập vừa tải ở bước 4 Sau khi remote thành công, từ bây giờ chúng ta có thể push code từ Local lên Repository CodeCommit bằng câu lệnh Git như bình thường, Repository của chúng ta sẽ gồm 3 folder chính như hình, mọi người có thể tham khảo thêm thông tin các file ở link này. "
+},
+{
+	"uri": "//localhost:1313/3-policyandrole/3.2-lambda/",
+	"title": "Tạo Role cho Lambda",
+	"tags": [],
+	"description": "",
+	"content": "\nTruy cập vào giao diện quản trị của dịch vụ IAM. Click chọn Roles. Click Create role. Click Custom trust policy. Sửa \u0026ldquo;Custom trust policy\u0026rdquo; như hình. Click Next Tại trang Add permissions, lần lượt thêm các policy AmazonDynamoDBFullAccess, AmazonS3FullAccess, AWSCodeCommitFullAccess, AWSGlueServiceRole do các hàm lambda của chúng ta cần tương tác với các service đó. Để Lambda có thể thực hiện việc tạo job Glue, cần quyền iam:PassRole để pass qua bước xác thực trong quá trình tạo Glue job, ở đây chúng ta sẽ tạo 1 custom policy có quyền iam:PassRole và gắn vào role. Click Next. Tại trang Name, review, and create, điền Role name và Description, kiểm tra lại Trust policy và Add permissions, sau đó bấm Create role Sau khi Create role, chúng ta sẽ vào lại giao diện Console của IAM, tìm kiếm tên Role và click vào kiểm tra lại các setting, phần này mình hơi lười nên không có ảnh đâu, mọi người tự làm nha (\u0026gt;_\u0026lt;).\n"
+},
+{
+	"uri": "//localhost:1313/2-overview/",
+	"title": "Tổng quan kiến trúc",
+	"tags": [],
+	"description": "",
+	"content": "\nTrong bài workshop này, chúng ta sẽ cùng nhau dựng 1 luồng CI/CD cơ bản sử dụng các service của AWS, bao gồm:\nCodeCommit CodeDeploy CodePipeline (CodeCommit -\u0026gt; CodeDeploy -\u0026gt; Lambda) Lambda S3 DynamoDB Glue Luồng CI/CD này của chúng ta sẽ hoạt động như sau:\nLập trình viên push code lên CodeCommit. CodeDeploy đồng bộ các file trong repository CodeCommit lên S3 bucket. Lambda (1) đọc file Job\u0026rsquo;s Entry từ S3 bucket và lưu vào DynamoDB. Lambda (2) đọc file Job\u0026rsquo;s Config và Job\u0026rsquo;s Script từ S3 bucket, sau đó tạo Glue job theo thông tin cấu hình trong file. Luồng CI/CD thông thường sẽ có sử dụng cả CodeBuild để chạy các bài test, nhưng trong giới hạn bài workshop này các file sẽ chỉ là file khai báo và script thôi nên chúng ta sẽ bỏ qua bước \u0026ldquo;Build\u0026rdquo;.\n"
+},
+{
+	"uri": "//localhost:1313/3-policyandrole/",
+	"title": "Tạo các Policy và Role cần thiết",
+	"tags": [],
+	"description": "",
+	"content": "Trong bước này, chúng ta sẽ thực hiện tạo các Policy và Role cần thiết để các service có thể tương tác với nhau.\nNội dung 3.1. Tạo Role cho CodePipeline 3.2. Tạo Role cho Lambda 3.3. Tạo Role cho Glue\n"
+},
+{
+	"uri": "//localhost:1313/3-policyandrole/3.3-glue/",
+	"title": "Tạo Role cho Glue",
+	"tags": [],
+	"description": "",
+	"content": "\nTruy cập vào giao diện quản trị của dịch vụ IAM. Click chọn Roles. Click Create role. Click Custom trust policy. Sửa \u0026ldquo;Custom trust policy\u0026rdquo; như hình. Click Next Tại trang Add permissions, lần lượt thêm các policy AmazonS3FullAccess, AWSGlueServiceRole do các job Glue của chúng ta cần các quyền tương ứng. Click Next. Tại trang Name, review, and create, điền Role name và Description, kiểm tra lại Trust policy và Add permissions, sau đó bấm Create role Sau khi Create role, chúng ta sẽ vào lại giao diện Console của IAM, tìm kiếm tên Role và click vào kiểm tra lại các setting, phần này mình hơi lười nên không có ảnh đâu, mọi người tự làm nha (\u0026gt;_\u0026lt;).\n"
+},
+{
+	"uri": "//localhost:1313/4-createrepo/",
+	"title": "Tạo repository CodeCommit",
+	"tags": [],
+	"description": "",
+	"content": "Các file của workshop sẽ được viết ở máy local, sau đó push lên CodeCommit để lưu trữ và phục vụ cho quá trình CI/CD, hình bên dưới là cấu trúc của 1 Repository CodeCommit\nTrong phần này chúng ta sẽ tiến hành tạo Repository CodeCommit và thực hiện tạo HTTPS Git credentials for AWS CodeCommit để có thể remote từ máy local, sau đó tiến hành push code lên\nNội dung: Tạo Repository CodeCommit Tạo HTTPS Git credentials for AWS CodeCommit và remote từ Local "
+},
+{
+	"uri": "//localhost:1313/5-createlambda/",
+	"title": "Tạo các Lambda",
+	"tags": [],
+	"description": "",
+	"content": "Ở bước này, chúng ta sẽ tiến hành tạo và viết các Function Lambda cho để đọc các file code và file cấu hình từ S3, sau đó thực hiện việc lưu Job\u0026rsquo;s Entry vào DynamoDB và tạo Glue Job từ các file tương ứng.\nTạo Lambda Function Truy cập vào giao diện quản trị dịch vụ AWS Lambda Click Functions , sau đó click Create function. Tại trang Create function. Chúng ta lần lượt điền click chọn và điền thông tin theo các bước, ở phần Role, chúng ta chọn Role đã tạo ở bước 3.2. Làm các bước trên 2 lần để tạo 2 Lambda Function như hình. Mặc định, các Lambda Function sẽ có Time out là 3s, chúng ta sẽ nâng chỉ số này lên để đáp ứng cho trường hợp khối lượng công việc cần nhiều hơn 3s để xử lý, ta sẽ làm tương tự ở Lambda Function còn lại. Script Để Lambda Function tương tác được với các service khác của AWS, chúng ta sẽ sử dụng thư viện Boto3 do AWS phát triển, thông tin thêm về Boto3 mọi người có thể đọc thêm ở đây.\nScript sử dụng trong 2 Lambda Function mọi người có thể tham khảo ở đây.\nTiếp theo, chúng ta sẽ tiến hành tạo bảng DynamoDB để lưu Job\u0026rsquo;s Entry.\n"
+},
+{
+	"uri": "//localhost:1313/6-createdynamodb_s3/",
+	"title": "Tạo bảng DynamoDB và S3 Bucket",
+	"tags": [],
+	"description": "",
+	"content": "Ở bước này, chúng ta sẽ tiến hành tạo bảng DynamoDB để lưu Job\u0026rsquo;s Entry.\nTạo bảng DynamoDB Truy cập vào giao diện quản trị dịch vụ Amazon DynamoDB Click Create table , sau đó ở giao diện Create table, ta lần lượt điền các thông tin Table name và Partition key, ở giới hạn bài lab này thì Partition key sẽ dùng để phân biệt các bảng cần Transform bằng Glue. Tại trang Tables của DynamoDB, chúng ta có thể thấy bảng vừa tạo. Tạo S3 Bucket Truy cập vào giao diện quản trị dịch vụ Amazon S3 Click Create bucket , sau đó ở giao diện Create bucket, ta lần lượt điền các thông tin AWS Region và Bucket name, sau đó kéo xuống cuối trang và click Create bucket Vậy là ta vừa tạo thành công 1 bảng DynamoDB và 1 bucket S3, tiếp theo chúng ta sẽ tiến hành tạo CodePipeline.\n"
+},
+{
+	"uri": "//localhost:1313/7-createpipeline/",
+	"title": "Tạo luồng CodePipeline",
+	"tags": [],
+	"description": "",
+	"content": "Ở bước này, chúng ta sẽ tiến hành tạo pipeline CodePipeline tự động thực hiện quá trình CI/CD.\nTạo pipeline Truy cập vào giao diện quản trị dịch vụ CodePipeline. Click Create pipeline Tại trang setting của CodePipeline, ta đặt tên cho pipeline, chọn Type V1 và role tạo ở bước 3.1 rồi bấm Next. Tại trang Add source stage, ta chọn source là CodeCommit sau đó chọn các thông số setting như hình rồi bấm Next. Skip qua bước Build stage do trong giới hạn bài workshop này, chúng ta không có gì để test :D. Tại sang Add deploy stage, ta chọn Deploy provider là S3, sau đó chọn đúng Region và Bucket vừa tạo ở bước 6, ở ô S3 object key, viết folder ta muốn lưu file, S3 bucket sẽ tự động tạo folder đó nếu chưa có, sau đó bấm Next. Review lại các setting ở bước trước và Create pipeline. Sau khi tạo Pipeline xong, chúng ta quay lại màn hình console của CodePipeline, sẽ thấy Pipeline vừa được tạo đang tự động thực hiện quá trình process Source -\u0026gt; Deploy. Tiếp theo, ta sẽ tiến hành thêm 2 Lambda Function tạo ở bước 5 để tự động viết Job\u0026rsquo;s Entry vào DynamoDB và tạo Glue job. Chọn Pipeline vừa tạo. Click Edit. Kéo xuống cuối trang, ở bên dưới Deploy stage, click chọn Add stage, điền tên cho Stage rồi click Add stage. Click Add action group trong khung Edit của stage Lambda vừa tạo. Tạo action Lambda tương ứng với các Lambda Function. Sau khi tạo xong 2 action Lambda, click Done rồi kéo lên trên click Save. Sau khi hoàn thành tất cả các bước, Pipeline của chúng ta sẽ trông như thế này :D. Tiếp theo, chúng ta sẽ tiến hành kiểm tra xem luồng CI/CD của chúng ta có hoạt động đúng không ở bước 8.\n"
+},
+{
+	"uri": "//localhost:1313/8-check/",
+	"title": "Kiểm tra kết quả chạy",
+	"tags": [],
+	"description": "",
+	"content": "Ở bước này, chúng ta sẽ thử vận hành luồng CI/CD xem có hoạt động đúng logic đã thiết kế không, kết quả mong muốn sẽ là:\nGhi thành công Job\u0026rsquo;s Entry vào bảng trong DynamoDB. Tạo thành công Glue job. Trạng thái trước test Truy cập vào giao diện quản trị dịch vụ Amazon DynamoDB, click vào Explore items, chọn bảng ta tạo ở bước 6, bảng chưa có dữ liệu sẽ trông như thế này. Truy cập vào giao diện quản trị dịch vụ AWS Glue, click vào ETL jobs, chưa có job nào được tạo. Tiến hành Test Update code và push lên CodeCommit. CodePipeline tự động trigger khi có commit mới lên CodeCommit. Chờ 1 lát để Pipeline chạy xong các stage. Kiểm tra S3 bucket Kiểm tra DynamoDB Kiểm tra Glue Chúc mừng bạn đã hoàn tất bài thực hành hướng dẫn dựng luồng CI/CD cơ bản với AWS. Hãy nhớ thực hiện bước dọn dẹp tài nguyên để tránh sinh chi phí ngoài ý muốn nhé.\n"
+},
+{
+	"uri": "//localhost:1313/9-cleanup/",
+	"title": "Dọn dẹp tài nguyên",
+	"tags": [],
+	"description": "",
+	"content": "Viết đến đây chắc mọi người cũng chán đọc lắm rồi, vậy mình sẽ chỉ liệt kê những tài nguyên mọi người cần xóa thôi nhé, còn bạn nào chưa hiểu rõ thì cứ giữ lại học kĩ hơn cũng được.\nS3 bucket Bảng trong DynamoDB Glue job Repository CodeCommit Pipeline của CodePipeline Các Lambda Function Rất cảm ơn mọi người đã đọc bài viết của mình, có góp ý gì xin gửi vào hòm thư: ndh2912001@gmail.com, đóng góp của mọi người là động lực rất lớn để mình tiếp tục làm các bài workshop hay hơn trong tương lai.\n"
+},
+{
+	"uri": "//localhost:1313/categories/",
+	"title": "Categories",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "//localhost:1313/tags/",
+	"title": "Tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+}]
